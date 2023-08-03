@@ -1,4 +1,4 @@
-import { Cache } from "./Cache.js";
+import { Cache } from "https://code4fukui.github.io/Cache/Cache.js";
 
 const key = (await Deno.readTextFile(".env")).trim();
 
