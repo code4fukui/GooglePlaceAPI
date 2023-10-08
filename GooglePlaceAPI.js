@@ -20,6 +20,15 @@ export const fetchFromFTID = async (ftid) => {
   return json;
 };
 
+export const fetchFromPID = async (pid) => {
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${pid}&key=${key}`;
+  //console.log(url);
+  //const json = await (await fetch(url)).json();
+  const json = await Cache.fetchJSON(url, "pid_" + pid);
+  //console.log(json);
+  return json;
+};
+
 /* // can't get by mid
 export const fetchFromMID = async (mid) => {
   const url = `https://maps.googleapis.com/maps/api/place/details/json?mid=${mid}&key=${key}`;
@@ -29,6 +38,21 @@ export const fetchFromMID = async (mid) => {
   return json;
 };
 */
+
+export const fetchFromName = async (name) => {
+  const name2 = encodeURIComponent(name);
+  const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${name2}&inputtype=textquery&key=${key}`;
+  //console.log(url);
+  //const json = await (await fetch(url)).json();
+  const json = await Cache.fetchJSON(url, "name_" + name2);
+  //console.log(json);
+
+  if (json.candidates.length == 0) {
+    return null;
+  }
+  const pid = json.candidates[0].place_id;
+  return await fetchFromPID(pid)
+};
 
 export const getPos = (json) => {
   if (json.error_message) {
@@ -61,12 +85,21 @@ export const fetchPosFromFTID = async (ftid) => {
   const json = await fetchFromFTID(ftid);
   return getPos(json);
 };
+export const fetchPosFromPID = async (pid) => {
+  const json = await fetchFromPID(pid);
+  return getPos(json);
+};
 /*
 export const fetchPosFromMID = async (mid) => {
   const json = await fetchFromMID(mid);
   return getPos(json);
 };
 */
+export const fetchPosFromName = async (name) => {
+  const json = await fetchFromName(name);
+  console.log(json)
+  return getPos(json);
+};
 
 //const pos = await fetchPosFromCID("9827041397113343018");
 //console.log(pos);
@@ -80,7 +113,11 @@ export const fetchPosFromMID = async (mid) => {
 export const GooglePlaceAPI = {
   fetchFromCID,
   fetchFromFTID,
+  fetchFromPID,
+  fetchFromName,
   getPos,
   fetchPosFromCID,
   fetchPosFromFTID,
+  fetchPosFromPID,
+  fetchPosFromName,
 };
