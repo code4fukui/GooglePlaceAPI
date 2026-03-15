@@ -1,5 +1,7 @@
 # GooglePlaceAPI
 
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
 A JavaScript library for fetching location information from the Google Places API.
 
 ## Features
