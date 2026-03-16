@@ -21,4 +21,4 @@ console.log(await GooglePlaceAPI.fetchPosFromName("めがね会館"));
 ```
 
 ## License
-MIT License
+MIT License — see [LICENSE](LICENSE).
